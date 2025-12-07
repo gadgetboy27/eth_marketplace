@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ethers } from 'ethers';
 import './App.css'; // Ensure your CSS file is correctly linked
 
 const Main = (props) => {
@@ -8,7 +9,7 @@ const Main = (props) => {
   const handleProductSubmit = (event) => {
     event.preventDefault();
     const name = productName;
-    const price = window.ethers.utils.parseEther(productPrice.toString(), 'Ether');
+    const price = ethers.parseEther(productPrice.toString());
     props.createProduct(name, price);
     // Clear input fields after submission
     setProductName('');
@@ -74,11 +75,11 @@ const Main = (props) => {
                   <tr key={key}>
                     <th scope='row'>{product.id.toString()}</th>
                     <td>{product.name}</td>
-                    <td>{window.ethers.utils.parseEther(product.price.toString(), 'Ether')} ETH</td>
+                    <td>{ethers.formatEther(product.price.toString())} ETH</td>
                     <td>{product.owner}</td>
                     <td>
                       {!product.purchased ? (
-                        <button 
+                        <button
                           name={product.id}
                           value={product.price}
                           onClick={(event) => props.purchaseProduct(event.target.name, event.target.value)}
