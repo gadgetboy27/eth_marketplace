@@ -75,3 +75,36 @@
   background-position: center center;
   background-size: cover;
 }
+
+/* Splash Page Styles */
+.splash-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.splash-container .card {
+  border: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.splash-container .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.splash-container h1 {
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.splash-container .lead {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Escrow Page Styles */
+.escrow-container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding: 2rem 0;
+}

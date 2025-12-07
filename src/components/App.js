@@ -1,31 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { ethers } from 'ethers';
 import Main from './Main';
 import Navbar from './Navbar';
+import SplashPage from './SplashPage';
+import EscrowPage from './EscrowPage';
 import Marketplace from '../abis/Marketplace.json';
 
 const networkId = 1;
 
 const App = () => {
+  const [currentView, setCurrentView] = useState('splash'); // 'splash', 'marketplace', 'escrow'
   const [account, setAccount] = useState('');
   const [productCount, setProductCount] = useState(0);
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [marketplace, setMarketplace] = useState(null);
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        await loadWeb3();
-        await loadBlockchainData();
-      } catch (error) {
-        console.error('Initialization error:', error);
-        setLoading(false);
-      }
-    };
-    init();
-  }, []);
 
   const loadWeb3 = async () => {
     try {
@@ -99,6 +89,51 @@ const App = () => {
     }
   };
 
+  const handleSelectMarketplace = async () => {
+    setCurrentView('marketplace');
+    setLoading(true);
+    try {
+      await loadWeb3();
+      await loadBlockchainData();
+    } catch (error) {
+      console.error('Error loading marketplace:', error);
+      alert('Failed to connect to MetaMask. Please make sure MetaMask is installed and unlocked.');
+      setCurrentView('splash');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSelectEscrow = () => {
+    setCurrentView('escrow');
+  };
+
+  const handleBackToHome = () => {
+    setCurrentView('splash');
+  };
+
+  // Render different views based on currentView state
+  if (currentView === 'splash') {
+    return (
+      <div id='content'>
+        <SplashPage
+          onSelectMarketplace={handleSelectMarketplace}
+          onSelectEscrow={handleSelectEscrow}
+        />
+      </div>
+    );
+  }
+
+  if (currentView === 'escrow') {
+    return (
+      <div id='content'>
+        <Navbar account={''} />
+        <EscrowPage onBack={handleBackToHome} />
+      </div>
+    );
+  }
+
+  // Marketplace view
   return (
     <div id='content'>
       <Navbar account={account} />
@@ -107,7 +142,12 @@ const App = () => {
           <p className='text-center'>Loading...</p>
         </div>
       ) : (
-        <Main products={products} createProduct={createProduct} purchaseProduct={purchaseProduct} />
+        <Main
+          products={products}
+          createProduct={createProduct}
+          purchaseProduct={purchaseProduct}
+          onBack={handleBackToHome}
+        />
       )}
     </div>
   );

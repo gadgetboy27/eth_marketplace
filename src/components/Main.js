@@ -21,6 +21,13 @@ const Main = (props) => {
         <section className="py-5 text-left container">
           <div className="row py-lg-5">
             <div className="col-lg-6 col-md-8 mx-auto">
+              {props.onBack && (
+                <div className="mb-3">
+                  <button onClick={props.onBack} className="btn btn-outline-secondary btn-sm">
+                    ← Back to Home
+                  </button>
+                </div>
+              )}
               <h1 className="fw-light">Blockchain Based Buy n Sell Market</h1>
               <p className="lead text-muted">
                 Something short and leading about the collection below—its contents, the creator, etc.
